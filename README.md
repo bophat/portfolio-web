@@ -73,44 +73,6 @@ pip install -r requirements.txt
 # Run the application
 uvicorn backend.main:app --reload
 ```
-
-## 📁 Project Structure
-
-```
-portfolio/
-├── backend/
-│   ├── __init__.py
-│   ├── main.py           # FastAPI application
-│   ├── config.py         # Configuration settings
-│   ├── database.py       # Database connection
-│   ├── models.py         # SQLAlchemy models
-│   ├── schemas.py        # Pydantic schemas
-│   ├── auth.py           # Authentication logic
-│   ├── seed.py           # Database seeder
-│   └── routers/          # API routers
-│       ├── auth_router.py
-│       ├── profile_router.py
-│       ├── skills_router.py
-│       ├── projects_router.py
-│       ├── learning_router.py
-│       └── contact_router.py
-├── templates/            # Jinja2 templates
-│   ├── base.html
-│   ├── index.html
-│   ├── login.html
-│   ├── register.html
-│   └── admin/
-│       └── dashboard.html
-├── static/
-│   └── css/
-│       └── styles.css
-├── Dockerfile
-├── docker-compose.yml
-├── requirements.txt
-├── .env.example
-└── README.md
-```
-
 ## 🔌 API Endpoints
 
 ### Authentication
@@ -165,21 +127,3 @@ docker-compose up -d --build
 # Remove everything including volumes
 docker-compose down -v
 ```
-
-## ⚙️ Environment Variables
-
-| Variable | Description | Default |
-|----------|-------------|---------|
-| DATABASE_URL | MySQL connection string | mysql+pymysql://... |
-| SECRET_KEY | JWT secret key | (change in production!) |
-| ACCESS_TOKEN_EXPIRE_MINUTES | Token expiration | 1440 (24 hours) |
-| MYSQL_ROOT_PASSWORD | MySQL root password | rootpassword |
-| MYSQL_PASSWORD | MySQL user password | portfolio_password |
-
-## 📝 License
-
-MIT License - feel free to use for your own portfolio!
-
----
-
-Built with ❤️ using FastAPI, MySQL, and Docker
