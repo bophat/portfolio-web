@@ -10,7 +10,7 @@ from .database import get_db
 from . import models, schemas
 
 # Password hashing
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+pwd_context = CryptContext(schemes=["sha256_crypt"], deprecated="auto")
 
 # OAuth2 scheme
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login", auto_error=False)
@@ -73,11 +73,20 @@ def create_user(db: Session, user: schemas.UserCreate, is_admin: bool = False) -
     return db_user
 
 
+from fastapi import Request
+
 async def get_current_user(
+    request: Request,
     token: Optional[str] = Depends(oauth2_scheme),
     db: Session = Depends(get_db)
 ) -> Optional[models.User]:
     """Get current user from JWT token (returns None if not authenticated)"""
+    if token is None:
+        # Check cookie if header is missing
+        cookie_token = request.cookies.get("access_token")
+        if cookie_token and cookie_token.startswith("Bearer "):
+            token = cookie_token[7:]
+    
     if token is None:
         return None
     

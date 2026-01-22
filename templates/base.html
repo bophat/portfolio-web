@@ -12,11 +12,12 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="stylesheet" href="/static/css/styles.css?v=2">
     {% block extra_css %}{% endblock %}
 </head>
 
-<body>
+<body data-theme="{{ profile.theme_preference if profile else 'default' }}"
+    data-layout="{{ profile.layout_preference if profile else 'standard' }}">
     {% block content %}{% endblock %}
 
     {% block extra_js %}{% endblock %}

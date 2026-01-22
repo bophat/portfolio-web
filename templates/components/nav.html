@@ -1,0 +1,21 @@
+<!-- Navigation -->
+<nav class="nav">
+    <div class="nav-container">
+        <a href="/" class="nav-logo">
+            <span class="logo-text">{{profile.name}}</span>
+            <span class="logo-dot"></span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#learning">Learning</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact" class="nav-cta">Contact</a></li>
+            {% if current_user %}
+            <li><a href="/admin" class="nav-admin">Admin</a></li>
+            {% else %}
+            <li><a href="/login" class="nav-login">Login</a></li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>

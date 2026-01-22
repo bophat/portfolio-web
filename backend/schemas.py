@@ -1,6 +1,7 @@
-from pydantic import BaseModel, EmailStr
-from typing import Optional, List
+from pydantic import BaseModel, EmailStr, field_validator
+from typing import Optional, List, Union
 from datetime import datetime
+import json
 
 
 # ============ User Schemas ============
@@ -46,6 +47,8 @@ class ProfileBase(BaseModel):
     stats_projects: Optional[str] = "2"
     stats_technologies: Optional[str] = "4+"
     stats_graduate_year: Optional[str] = "2024"
+    theme_preference: Optional[str] = "default"
+    layout_preference: Optional[str] = "standard"
 
 
 class ProfileCreate(ProfileBase):
@@ -55,6 +58,8 @@ class ProfileCreate(ProfileBase):
 class ProfileUpdate(ProfileBase):
     name: Optional[str] = None
     title: Optional[str] = None
+    theme_preference: Optional[str] = None
+    layout_preference: Optional[str] = None
 
 
 class ProfileResponse(ProfileBase):
@@ -95,15 +100,23 @@ class SkillResponse(SkillBase):
 
 
 # ============ Project Schemas ============
+
+
 class ProjectBase(BaseModel):
     number: Optional[str] = "01"
     project_type: Optional[str] = None
     title: str
     description: Optional[str] = None
-    what_learned: Optional[str] = None  # JSON string
-    tech_tags: Optional[str] = None  # JSON string
+    what_learned: Optional[Union[str, List[str]]] = None
+    tech_tags: Optional[Union[str, List[str]]] = None
     github_link: Optional[str] = None
     sort_order: Optional[int] = 0
+
+    @field_validator("what_learned", "tech_tags", mode="before")
+    def parse_json_list(cls, v):
+        if isinstance(v, list):
+            return json.dumps(v)
+        return v
 
 
 class ProjectCreate(ProjectBase):
@@ -115,10 +128,16 @@ class ProjectUpdate(BaseModel):
     project_type: Optional[str] = None
     title: Optional[str] = None
     description: Optional[str] = None
-    what_learned: Optional[str] = None
-    tech_tags: Optional[str] = None
+    what_learned: Optional[Union[str, List[str]]] = None
+    tech_tags: Optional[Union[str, List[str]]] = None
     github_link: Optional[str] = None
     sort_order: Optional[int] = None
+
+    @field_validator("what_learned", "tech_tags", mode="before")
+    def parse_json_list(cls, v):
+        if isinstance(v, list):
+            return json.dumps(v)
+        return v
 
 
 class ProjectResponse(ProjectBase):
@@ -126,6 +145,7 @@ class ProjectResponse(ProjectBase):
     
     class Config:
         from_attributes = True
+
 
 
 # ============ Learning Goal Schemas ============
@@ -230,6 +250,37 @@ class ContactInfoUpdate(BaseModel):
 
 
 class ContactInfoResponse(ContactInfoBase):
+    id: int
+    
+    class Config:
+        from_attributes = True
+
+# ============ Timeline Item Schemas ============
+class TimelineItemBase(BaseModel):
+    period: str
+    title: str
+    organization: str
+    description: Optional[str] = None
+    item_type: str = "work"  # "work" or "education"
+    icon: Optional[str] = "briefcase"
+    sort_order: Optional[int] = 0
+
+
+class TimelineItemCreate(TimelineItemBase):
+    pass
+
+
+class TimelineItemUpdate(BaseModel):
+    period: Optional[str] = None
+    title: Optional[str] = None
+    organization: Optional[str] = None
+    description: Optional[str] = None
+    item_type: Optional[str] = None
+    icon: Optional[str] = None
+    sort_order: Optional[int] = None
+
+
+class TimelineItemResponse(TimelineItemBase):
     id: int
     
     class Config:

@@ -1,0 +1,27 @@
+<!-- Learning Section -->
+<section class="learning" id="learning">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-tag">Always growing</span>
+            <h2 class="section-title">Learning & Growth</h2>
+            <p class="section-subtitle">I'm committed to continuous learning and professional development</p>
+        </div>
+
+        <div class="learning-grid">
+            {% for goal in learning_goals %}
+            <div class="learning-card{% if goal.is_featured %} featured{% endif %}">
+                <div class="learning-card-icon">{{ goal.icon }}</div>
+                <h3 class="learning-card-title">{{ goal.title }}</h3>
+                <ul class="learning-list">
+                    {% for item in goal.items_list %}
+                    <li>
+                        <strong>{{ item.title }}</strong>
+                        <span>{{ item.description }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>

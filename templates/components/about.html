@@ -1,0 +1,43 @@
+<!-- About Section -->
+<section class="about" id="about">
+    <div class="container">
+        <div class="about-grid">
+            <div class="about-content">
+                <span class="section-tag">Who I am</span>
+                <h2 class="section-title left">About Me</h2>
+
+                <div class="about-text">
+                    {% if about and about.paragraphs_list %}
+                    {% for paragraph in about.paragraphs_list %}
+                    <p>{{ paragraph }}</p>
+                    {% endfor %}
+                    {% endif %}
+                    {% if about and about.highlight_text %}
+                    <p class="highlight">
+                        <strong>{{ about.highlight_text.split(':')[0] }}:</strong>{{ about.highlight_text.split(':')[1]
+                        if ':' in about.highlight_text else about.highlight_text }}
+                    </p>
+                    {% endif %}
+                    {% if about and about.personal_note %}
+                    <p class="personal">{{ about.personal_note }}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="about-highlights">
+                <div class="highlight-card">
+                    <h3>Quick Facts</h3>
+                    <ul>
+                        {% for fact in quick_facts %}
+                        <li>
+                            <span class="highlight-label">{{ fact.label }}</span>
+                            <span class="highlight-value{% if fact.is_available %} available{% endif %}">{{ fact.value
+                                }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

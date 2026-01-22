@@ -1,0 +1,177 @@
+<!-- Skill Modal -->
+<div class="modal-overlay" id="skillModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title" id="skillModalTitle">Add Skill</h3>
+            <button class="modal-close" onclick="closeModal('skillModal')">&times;</button>
+        </div>
+        <form id="skillForm">
+            <input type="hidden" id="skillId">
+            <div class="form-group">
+                <label class="form-label">Category</label>
+                <select class="form-select" id="skillCategory" required>
+                    <option value="Languages">Languages</option>
+                    <option value="Frameworks">Frameworks</option>
+                    <option value="Tools & DB">Tools & DB</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Name</label>
+                <input type="text" class="form-input" id="skillName" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Level (1-3)</label>
+                <select class="form-select" id="skillLevel" required>
+                    <option value="1">1 - Basic</option>
+                    <option value="2">2 - Intermediate</option>
+                    <option value="3">3 - Advanced</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label" style="display:flex; align-items:center; gap:0.5rem; cursor:pointer">
+                    <input type="checkbox" id="skillIsLearning"> Currently Learning
+                </label>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" onclick="closeModal('skillModal')">Cancel</button>
+                <button type="submit" class="btn-primary">Save Skill</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Project Modal -->
+<div class="modal-overlay" id="projectModal">
+    <div class="modal-content" style="max-width: 700px;">
+        <div class="modal-header">
+            <h3 class="modal-title" id="projectModalTitle">Add Project</h3>
+            <button class="modal-close" onclick="closeModal('projectModal')">&times;</button>
+        </div>
+        <form id="projectForm">
+            <input type="hidden" id="projectId">
+            <div class="admin-form-row">
+                <div class="form-group">
+                    <label class="form-label">Title</label>
+                    <input type="text" class="form-input" id="projectTitle" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Type</label>
+                    <input type="text" class="form-input" id="projectType" required
+                        placeholder="e.g. Full Stack Web App">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Description</label>
+                <textarea class="form-textarea" id="projectDescription" required></textarea>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Tech Tags (comma separated)</label>
+                <input type="text" class="form-input" id="projectTechTags" placeholder="Python, JavaScript, Docker">
+            </div>
+            <div class="admin-form-row">
+                <div class="form-group">
+                    <label class="form-label">GitHub</label>
+                    <input type="text" class="form-input" id="projectGitHub">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Demo Link</label>
+                    <input type="text" class="form-input" id="projectLink">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" onclick="closeModal('projectModal')">Cancel</button>
+                <button type="submit" class="btn-primary">Save Project</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Timeline Modal -->
+<div class="modal-overlay" id="timelineModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title" id="timelineModalTitle">Add Timeline Item</h3>
+            <button class="modal-close" onclick="closeModal('timelineModal')">&times;</button>
+        </div>
+        <form id="timelineForm">
+            <input type="hidden" id="timelineId">
+            <div class="form-group">
+                <label class="form-label">Type</label>
+                <select class="form-select" id="timelineType" required>
+                    <option value="work">Work Experience</option>
+                    <option value="education">Education</option>
+                </select>
+            </div>
+            <div class="admin-form-row">
+                <div class="form-group">
+                    <label class="form-label">Period</label>
+                    <input type="text" class="form-input" id="timelinePeriod" required placeholder="e.g. 2020 - 2024">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Title</label>
+                    <input type="text" class="form-input" id="timelineTitle" required placeholder="e.g. Senior Dev">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Organization</label>
+                <input type="text" class="form-input" id="timelineOrg" required placeholder="e.g. Company X">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Description</label>
+                <textarea class="form-textarea" id="timelineDesc" required></textarea>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Icon</label>
+                <select class="form-select" id="timelineIcon">
+                    <option value="briefcase">Briefcase (Work)</option>
+                    <option value="graduation-cap">Graduation Cap (Education)</option>
+                    <option value="code">Code</option>
+                    <option value="star">Star</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" onclick="closeModal('timelineModal')">Cancel</button>
+                <button type="submit" class="btn-primary">Save Item</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Contact Modal -->
+<div class="modal-overlay" id="contactModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title" id="contactModalTitle">Add Contact</h3>
+            <button class="modal-close" onclick="closeModal('contactModal')">&times;</button>
+        </div>
+        <form id="contactForm">
+            <input type="hidden" id="contactId">
+            <div class="form-group">
+                <label class="form-label">Type</label>
+                <select class="form-select" id="contactType" required>
+                    <option value="email">Email</option>
+                    <option value="linkedin">LinkedIn</option>
+                    <option value="github">GitHub</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Label</label>
+                <input type="text" class="form-input" id="contactLabel" required placeholder="e.g. Email Me">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Value</label>
+                <input type="text" class="form-input" id="contactValue" required placeholder="e.g. user@example.com">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Link (Optional)</label>
+                <input type="text" class="form-input" id="contactLink" placeholder="https://...">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" onclick="closeModal('contactModal')">Cancel</button>
+                <button type="submit" class="btn-primary">Save Contact</button>
+            </div>
+        </form>
+    </div>
+</div>

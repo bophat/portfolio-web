@@ -1,0 +1,33 @@
+<!-- Projects Section -->
+<section class="admin-section" id="projects">
+    <div class="admin-section-header">
+        <h2 class="admin-section-title">Projects</h2>
+        <button class="btn-add" onclick="openProjectModal()">+ Add Project</button>
+    </div>
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Title</th>
+                <th>Type</th>
+                <th>Technologies</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="projectsTableBody">
+            {% for project in projects %}
+            <tr data-id="{{ project.id }}" data-json='{{ project | tojson | forceescape }}'>
+                <td>{{ project.number }}</td>
+                <td>{{ project.title }}</td>
+                <td>{{ project.project_type }}</td>
+                <td>{{ project.tech_tags_list | join(', ') if project.tech_tags_list else '' }}</td>
+                <td class="action-btns">
+                    <button class="btn-sm btn-sm-edit"
+                        onclick='openProjectModal(JSON.parse(this.closest("tr").dataset.json))'>Edit</button>
+                    <button class="btn-sm btn-sm-delete" onclick="deleteProject({{ project.id }})">Delete</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>

@@ -1,0 +1,31 @@
+<!-- Contact Info Section -->
+<section class="admin-section" id="contacts">
+    <div class="admin-section-header">
+        <h2 class="admin-section-title">Contact Information</h2>
+        <button class="btn-add" onclick="openContactModal()">+ Add Contact</button>
+    </div>
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Label</th>
+                <th>Value</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="contactsTableBody">
+            {% for contact in contacts %}
+            <tr data-id="{{ contact.id }}" data-json='{{ contact | tojson | forceescape }}'>
+                <td>{{ contact.contact_type }}</td>
+                <td>{{ contact.label }}</td>
+                <td>{{ contact.value }}</td>
+                <td class="action-btns">
+                    <button class="btn-sm btn-sm-edit"
+                        onclick='openContactModal(JSON.parse(this.closest("tr").dataset.json))'>Edit</button>
+                    <button class="btn-sm btn-sm-delete" onclick="deleteContact({{ contact.id }})">Delete</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>

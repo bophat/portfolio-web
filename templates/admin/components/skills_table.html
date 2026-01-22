@@ -1,0 +1,33 @@
+<!-- Skills Section -->
+<section class="admin-section" id="skills">
+    <div class="admin-section-header">
+        <h2 class="admin-section-title">Skills</h2>
+        <button class="btn-add" onclick="openSkillModal()">+ Add Skill</button>
+    </div>
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Skill Name</th>
+                <th>Level</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="skillsTableBody">
+            {% for skill in skills %}
+            <tr data-id="{{ skill.id }}" data-json='{{ skill | tojson | forceescape }}'>
+                <td>{{ skill.category }}</td>
+                <td>{{ skill.name }}</td>
+                <td>{{ '●' * skill.level }}{{ '○' * (3 - skill.level) }}</td>
+                <td>{% if skill.is_learning %}<span class="badge badge-learning">Learning</span>{% endif %}</td>
+                <td class="action-btns">
+                    <button class="btn-sm btn-sm-edit"
+                        onclick='openSkillModal(JSON.parse(this.closest("tr").dataset.json))'>Edit</button>
+                    <button class="btn-sm btn-sm-delete" onclick="deleteSkill({{ skill.id }})">Delete</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>

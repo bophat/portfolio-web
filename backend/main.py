@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 import json
 
 from .database import engine, get_db, SessionLocal
-from . import models, auth
+from . import models, auth, schemas
 from .routers import (
     auth_router,
     profile_router,
@@ -17,6 +17,7 @@ from .routers import (
     projects_router,
     learning_router,
     contact_router,
+    timeline_router,
 )
 from .seed import init_db, seed_data
 
@@ -65,6 +66,7 @@ app.include_router(skills_router.router)
 app.include_router(projects_router.router)
 app.include_router(learning_router.router)
 app.include_router(contact_router.router)
+app.include_router(timeline_router.router)
 
 
 # Helper to get current user from cookie
@@ -73,15 +75,19 @@ async def get_current_user_from_cookie(request: Request, db: Session = Depends(g
     token = request.cookies.get("access_token")
     if token and token.startswith("Bearer "):
         token = token[7:]
-        try:
-            from jose import jwt
-            from .config import settings
-            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
-            username = payload.get("sub")
-            if username:
-                return auth.get_user_by_username(db, username)
-        except:
-            pass
+    
+    if not token:
+        return None
+
+    try:
+        from jose import jwt
+        from .config import settings
+        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+        username = payload.get("sub")
+        if username:
+            return auth.get_user_by_username(db, username)
+    except:
+        pass
     return None
 
 
@@ -105,6 +111,7 @@ async def home(request: Request, db: Session = Depends(get_db)):
     about = db.query(models.AboutInfo).first()
     quick_facts = db.query(models.QuickFact).order_by(models.QuickFact.sort_order).all()
     contacts = db.query(models.ContactInfo).order_by(models.ContactInfo.sort_order).all()
+    timeline_items = db.query(models.TimelineItem).order_by(models.TimelineItem.sort_order.desc()).all()
     
     # Group skills by category
     skills_by_category = {}
@@ -137,7 +144,9 @@ async def home(request: Request, db: Session = Depends(get_db)):
     if about and about.paragraphs:
         about.paragraphs_list = json.loads(about.paragraphs)
     else:
-        about = models.AboutInfo()
+        # Create empty about if None
+        if not about:
+            about = models.AboutInfo()
         about.paragraphs_list = []
     
     return templates.TemplateResponse("index.html", {
@@ -149,7 +158,8 @@ async def home(request: Request, db: Session = Depends(get_db)):
         "learning_goals": learning_goals,
         "about": about,
         "quick_facts": quick_facts,
-        "contacts": contacts
+        "contacts": contacts,
+        "timeline_items": timeline_items
     })
 
 
@@ -185,22 +195,36 @@ async def admin_dashboard(request: Request, db: Session = Depends(get_db)):
         return RedirectResponse(url="/login", status_code=302)
     
     profile = db.query(models.Profile).first()
-    skills = db.query(models.Skill).order_by(models.Skill.category, models.Skill.sort_order).all()
-    projects = db.query(models.Project).order_by(models.Project.sort_order).all()
-    learning_goals = db.query(models.LearningGoal).order_by(models.LearningGoal.sort_order).all()
-    quick_facts = db.query(models.QuickFact).order_by(models.QuickFact.sort_order).all()
-    contacts = db.query(models.ContactInfo).order_by(models.ContactInfo.sort_order).all()
     
-    # Parse JSON fields for display
-    for project in projects:
-        if project.what_learned:
-            project.what_learned_list = json.loads(project.what_learned)
+    # Fetch lists
+    skills_orm = db.query(models.Skill).order_by(models.Skill.category, models.Skill.sort_order).all()
+    projects_orm = db.query(models.Project).order_by(models.Project.sort_order).all()
+    learning_goals_orm = db.query(models.LearningGoal).order_by(models.LearningGoal.sort_order).all()
+    quick_facts_orm = db.query(models.QuickFact).order_by(models.QuickFact.sort_order).all()
+    contacts_orm = db.query(models.ContactInfo).order_by(models.ContactInfo.sort_order).all()
+    timeline_orm = db.query(models.TimelineItem).order_by(models.TimelineItem.sort_order.desc()).all()
+    
+    # Serialize to dicts for JSON compatibility in templates
+    skills = [schemas.SkillResponse.model_validate(s).model_dump() for s in skills_orm]
+    
+    projects = []
+    for p in projects_orm:
+        p_data = schemas.ProjectResponse.model_validate(p).model_dump()
+        if p_data.get("tech_tags"):
+            try:
+                p_data["tech_tags_list"] = json.loads(p_data["tech_tags"])
+            except:
+                p_data["tech_tags_list"] = []
         else:
-            project.what_learned_list = []
-        if project.tech_tags:
-            project.tech_tags_list = json.loads(project.tech_tags)
-        else:
-            project.tech_tags_list = []
+            p_data["tech_tags_list"] = []
+        projects.append(p_data)
+
+    contacts = [schemas.ContactInfoResponse.model_validate(c).model_dump() for c in contacts_orm]
+    timeline = [schemas.TimelineItemResponse.model_validate(t).model_dump() for t in timeline_orm]
+    
+    # Not using edit modal for these yet, but good practice to serialize
+    learning_goals = [schemas.LearningGoalResponse.model_validate(l).model_dump() for l in learning_goals_orm]
+    quick_facts = [schemas.QuickFactResponse.model_validate(q).model_dump() for q in quick_facts_orm]
     
     return templates.TemplateResponse("admin/dashboard.html", {
         "request": request,
@@ -210,5 +234,6 @@ async def admin_dashboard(request: Request, db: Session = Depends(get_db)):
         "projects": projects,
         "learning_goals": learning_goals,
         "quick_facts": quick_facts,
-        "contacts": contacts
+        "contacts": contacts,
+        "timeline_items": timeline
     })

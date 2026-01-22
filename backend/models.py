@@ -28,6 +28,8 @@ class Profile(Base):
     stats_projects = Column(String(20), default="2")
     stats_technologies = Column(String(20), default="4+")
     stats_graduate_year = Column(String(20), default="2024")
+    theme_preference = Column(String(50), default="default")
+    layout_preference = Column(String(50), default="standard")
 
 
 class Skill(Base):
@@ -96,4 +98,18 @@ class ContactInfo(Base):
     value = Column(String(200), nullable=False)
     link = Column(String(500))
     icon = Column(String(50))
+    sort_order = Column(Integer, default=0)
+
+
+class TimelineItem(Base):
+    """Experience and Education timeline items"""
+    __tablename__ = "timeline_items"
+
+    id = Column(Integer, primary_key=True, index=True)
+    period = Column(String(50))  # e.g. "2020 - 2024"
+    title = Column(String(100))  # e.g. "Software Engineer" or "Computer Science Degree"
+    organization = Column(String(100))  # e.g. "Company X" or "University Y"
+    description = Column(Text, nullable=True)
+    item_type = Column(String(20))  # "education" or "work"
+    icon = Column(String(50), nullable=True)  # e.g. "briefcase" or "graduation-cap"
     sort_order = Column(Integer, default=0)

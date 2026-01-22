@@ -1,0 +1,74 @@
+<!-- Profile Section -->
+<section class="admin-section" id="profile">
+    <div class="admin-section-header">
+        <h2 class="admin-section-title">Profile Information</h2>
+        <button class="btn-edit" id="saveProfileBtn">Save Changes</button>
+    </div>
+    <form class="admin-form" id="profileForm">
+        <div class="admin-form-row">
+            <div class="form-group">
+                <label class="form-label" for="profileName">Full Name</label>
+                <input type="text" class="form-input" id="profileName" value="{{ profile.name if profile else '' }}">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="profileTitle">Title</label>
+                <input type="text" class="form-input" id="profileTitle" value="{{ profile.title if profile else '' }}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="profileSummary">Summary</label>
+            <textarea class="form-textarea" id="profileSummary">{{ profile.summary if profile else '' }}</textarea>
+        </div>
+        <div class="admin-form-row">
+            <div class="form-group">
+                <label class="form-label" for="profileBadge">Hero Badge</label>
+                <input type="text" class="form-input" id="profileBadge"
+                    value="{{ profile.hero_badge if profile else '' }}">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="profileProjects">Projects Count</label>
+                <input type="text" class="form-input" id="profileProjects"
+                    value="{{ profile.stats_projects if profile else '' }}">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="profileTech">Technologies</label>
+                <input type="text" class="form-input" id="profileTech"
+                    value="{{ profile.stats_technologies if profile else '' }}">
+            </div>
+        </div>
+        <!-- Design Preference Row -->
+        <div class="admin-form-row"
+            style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);">
+            <div class="form-group">
+                <label class="form-label" for="profileTheme">Theme</label>
+                <select class="form-select" id="profileTheme">
+                    <option value="default" {% if profile and profile.theme_preference=='default' %}selected{% endif %}>
+                        Default (Dark)</option>
+                    <option value="ocean" {% if profile and profile.theme_preference=='ocean' %}selected{% endif %}>
+                        Ocean</option>
+                    <option value="sunset" {% if profile and profile.theme_preference=='sunset' %}selected{% endif %}>
+                        Sunset</option>
+                    <option value="neon" {% if profile and profile.theme_preference=='neon' %}selected{% endif %}>Neon
+                    </option>
+                    <option value="light" {% if profile and profile.theme_preference=='light' %}selected{% endif %}>
+                        Light (Minimal)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="profileLayout">Layout</label>
+                <select class="form-select" id="profileLayout">
+                    <option value="standard" {% if profile and profile.layout_preference=='standard' %}selected{% endif
+                        %}>Standard</option>
+                    <option value="compact" {% if profile and profile.layout_preference=='compact' %}selected{% endif
+                        %}>Compact</option>
+                    <option value="wide" {% if profile and profile.layout_preference=='wide' %}selected{% endif %}>Wide
+                    </option>
+                    <option value="minimal" {% if profile and profile.layout_preference=='minimal' %}selected{% endif
+                        %}>Minimal</option>
+                    <option value="centered" {% if profile and profile.layout_preference=='centered' %}selected{% endif
+                        %}>Centered</option>
+                </select>
+            </div>
+        </div>
+    </form>
+</section>

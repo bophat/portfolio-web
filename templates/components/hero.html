@@ -1,0 +1,65 @@
+<!-- Hero Section -->
+<section class="hero" id="hero">
+    <div class="container">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="badge-dot"></span>
+                {{ profile.hero_badge if profile else 'Open to opportunities' }}
+            </div>
+            <h1 class="hero-name">
+                Hi, I'm <span class="gradient-text">{{ profile.name if profile else 'Alex Chen' }}</span>
+            </h1>
+            <h2 class="hero-title">{{ profile.title if profile else 'Junior Backend & Data Engineer' }}</h2>
+            <p class="hero-summary">
+                {{ profile.summary if profile else '' }}
+            </p>
+            <div class="hero-buttons">
+                <a href="#projects" class="btn btn-primary">
+                    <span>View My Projects</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                </a>
+                <a href="#contact" class="btn btn-secondary">Get in Touch</a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-number">{{ profile.stats_projects if profile else '2' }}</span>
+                    <span class="stat-label">Projects</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-number">{{ profile.stats_technologies if profile else '4+' }}</span>
+                    <span class="stat-label">Technologies</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-number">{{ profile.stats_graduate_year if profile else '2024' }}</span>
+                    <span class="stat-label">CS Graduate</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="code-window">
+                <div class="window-header">
+                    <div class="window-dots">
+                        <span></span><span></span><span></span>
+                    </div>
+                    <span class="window-title">developer.py</span>
+                </div>
+                <pre class="code-content"><code><span class="code-keyword">class</span> <span class="code-class">JuniorDeveloper</span>:
+    <span class="code-keyword">def</span> <span class="code-func">__init__</span>(self):
+        self.name = <span class="code-string">"{{ profile.name if profile else 'Alex Chen' }}"</span>
+        self.role = <span class="code-string">"Backend & Data"</span>
+        self.learning = <span class="code-bool">True</span>
+        
+    <span class="code-keyword">def</span> <span class="code-func">get_skills</span>(self):
+        <span class="code-keyword">return</span> [
+            <span class="code-string">"Python"</span>, 
+            <span class="code-string">"SQL"</span>, 
+            <span class="code-string">"FastAPI"</span>
+        ]</code></pre>
+            </div>
+        </div>
+    </div>
+</section>
