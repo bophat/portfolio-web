@@ -5,7 +5,7 @@ from functools import lru_cache
 
 class Settings(BaseSettings):
     # Database
-    DATABASE_URL: str = "mysql+pymysql://user:password@localhost:3306/portfolio"
+    DATABASE_URL: str = "sqlite:///./portfolio.db"
     
     # JWT
     SECRET_KEY: str = "your-super-secret-key-change-in-production"
